@@ -3,13 +3,13 @@ services:
     ui:
         build:
             context: .
-            dockerfile: ./packages/ui/Dockerfile
+            dockerfile: ./packages/ui/Dockerfile.prod
             args:
                 PROJECT_DIR: "${PROJECT_DIR}"
         container_name: ui
         restart: always
         environment: 
-            NODE_ENV: "${NODE_ENV}"
+            NODE_ENV: "production"
             REACT_APP_SERVER_LOCATION: "${SERVER_LOCATION}"
             REACT_APP_PORT_SERVER: "${PORT_SERVER}"
             PROJECT_DIR: "${PROJECT_DIR}"
@@ -29,7 +29,7 @@ services:
         depends_on: 
                 - redis
                 - db
-        command: /bin/sh -c "chmod +x ./scripts/* && ./scripts/ui.sh"
+        command: /bin/sh -c "ls -la . && chmod +x ./scripts/* && ./scripts/ui.sh"
     server:
         build:
             context: .
@@ -39,7 +39,7 @@ services:
         container_name: server
         restart: always
         environment: 
-            NODE_ENV: "${NODE_ENV}"
+            NODE_ENV: "production"
             JWT_SECRET: "${JWT_SECRET}"
             PROJECT_DIR: "${PROJECT_DIR}"
             REACT_APP_SERVER_LOCATION: "${SERVER_LOCATION}"

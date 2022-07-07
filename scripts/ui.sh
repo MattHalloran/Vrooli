@@ -1,7 +1,13 @@
 #!/bin/sh
 
-# Wait for backend server to start. It could run fine alone, but we don't want a user trying to access the site during this time
-${PROJECT_DIR}/scripts/wait-for.sh server:5329 -t 1000 -- echo 'Backend server is up. Starting app'
+# TODO hacky. wait-for.sh is better, but node slim does not support it yet.
+# If in production, set timeout to wait for backend to start. 
+# Development startup takes long enough that no wait is needed
+if [ "${NODE_ENV}" = "production" ]; then
+    echo 'Waiting for backend to start...'
+    timeout=100
+fi
+echo 'Starting app...'
 
 cd ${PROJECT_DIR}/packages/ui
 
